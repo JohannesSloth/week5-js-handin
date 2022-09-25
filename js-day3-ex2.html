@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .parent {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 1px 1px;
+        }
+        .item {
+            background-color: lightskyblue;
+            border: 1px solid #fff;
+            padding: 5px 5px 5px 2em;
+            min-height: 250px;
+        }
+    </style>
+</head>
+<body style="font-family: sans-serif">
+<div style="margin-left: 10%;width: 75%;margin-right: auto">
+    <h2>Car's 'R' Us Client Demo - Version poor ;-)</h2>
+    <div class="parent">
+        <div class="item">
+            <h3>Show all Members</h3>
+            <button id="btn-get-all">Get all</button>
+            <div id="div-all-members" style="display: none;">
+                <table>
+                    <thead>
+                      <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Street</th>
+                        <th>City</th>
+                        <th>Zip</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody"></tbody>
+                  </table>
+            </div>
+        </div>
+        <div class="item">
+            <h3>Find a single Member</h3>
+            <label for="input-username">Username</label>&nbsp;<input id="input-username"/>
+            <button id="btn-findmember">Find</button>
+            <p id="p-single-user" style="display:none;"></p>
+        </div>
+        <div class="item">
+            <h3>Add a Member</h3>
+            <div><label for="input-field-username">Username</label>&nbsp;<input id="input-field-username"/></div>
+            <div><label for="input-field-password">password</label>&nbsp;<input id="input-field-password"/></div>
+            <div><label for="input-field-email">email</label>&nbsp;<input id="input-field-email"/></div>
+            <div><label for="input-field-street">street</label>&nbsp;<input id="input-field-street"/></div>
+            <div><label for="input-field-city">city</label>&nbsp;<input id="input-field-city"/></div>
+            <div><label for="input-field-zip">zip</label>&nbsp;<input id="input-field-zip"/></div>
+            <!--<div><label for="input-field2">Field-2</label>&nbsp;<input id="input-field2"/></div>
+            <p> ..... remaining fields</p>-->
+            <button id="submit-member-btn">Submit new member</button>
+            <p>Show All Members kører for at vise den tilføjede member</p>
+        </div>
+        <div class="item">
+            <h3>Edit a Car or a Member</h3>
+            <label for="text-for-id2">Id</label>&nbsp;<input id="text-for-id2"/>
+            <button>Find item to edit</button>
+            <p>Show what you find here, and let users edit fields</p>
+            <p>......</p>
+            <button>Submit edited item</button>
+            <p>Use one of the two GET pages to verify that "something" was added</p>
+        </div>
+    </div>
+</div>
+
+    <script>
+        function loadAllMemberData() {
+            document.getElementById('div-all-members').style.display = 'block'
+            fetch('https://johannes-cars-r-us.azurewebsites.net/api/members')
+            .then(function (r){
+                if(!r.ok){
+                    return Promise.reject("sheet",r.status)
+                }
+                return r.json()
+            })
+            .then(members => {
+                const rows = members.map(m => `
+                <tr>
+                    <td>${m.username}</td>
+                    <td>${m.email}</td>
+                    <td>${m.firstName}</td>
+                    <td>${m.lastName}</td>
+                    <td>${m.street}</td>
+                    <td>${m.city}</td>
+                    <td>${m.zip}</td>
+                </tr>
+                `).join("")
+                document.getElementById('tbody').innerHTML = rows
+            })
+        }
+
+        const getAllBtn = document.getElementById('btn-get-all')
+        getAllBtn.onclick = loadAllMemberData
+
+
+        function loadSingleMemberData() {
+            document.getElementById("p-single-user").style.display = "block"
+            const inputUsername = document.getElementById('input-username').value
+            let url = 'https://johannes-cars-r-us.azurewebsites.net/api/members/' + inputUsername
+            fetch(url)
+            .then(function (r){
+                if(!r.ok){
+                    return Promise.reject("UPPPS",r.status)
+                }
+                return r.json()  //Returns a promise
+            })
+            .then(members => {
+                //Her kan vi arbejde med data
+                const p = [members].map(m => `
+                Username: ${m.username}
+                <br> Email: ${m.email}
+                <br> First Name: ${m.firstName}
+                <br> Last Name: ${m.lastName}
+                <br> <b>Address</b>
+                <br> Street: ${m.street}
+                <br> City: ${m.city}
+                <br> Zip: ${m.zip}
+                `).join("")
+                document.getElementById("p-single-user").innerHTML = p
+            })
+            .catch(e => {
+                console.error(e)
+            })
+        }
+
+        const findMemberBtn = document.getElementById('btn-findmember')
+        findMemberBtn.onclick = loadSingleMemberData
+
+
+        function addMember() {
+            const options = {
+            method: "POST",
+            headers : {"Content-type": "application/json"},
+            body: JSON.stringify({
+                username: document.getElementById('input-field-username').value,
+                password: document.getElementById('input-field-password').value,
+                email: document.getElementById('input-field-email').value,
+                street: document.getElementById('input-field-street').value,
+                city: document.getElementById('input-field-city').value,
+                zip: document.getElementById('input-field-zip').value
+                })
+            }
+            fetch('https://johannes-cars-r-us.azurewebsites.net/api/members/', options)
+            .then(r=>r.json())  //No error handling is this demo
+            .then(data => {
+                //This is where you can use the result
+                console.log(data)
+                loadAllMemberData()
+            })
+        }
+
+        const submitMemberBtn = document.getElementById('submit-member-btn')
+        submitMemberBtn.onclick = addMember
+    </script>
+</body>
+</html>

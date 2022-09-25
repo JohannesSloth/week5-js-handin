@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <style>
+        .my-div {width: 25px; height: 25px;background-color:red; margin:1px;}
+      </style>
+     
+</head>
+<body>
+    <h2>Excercise 2</h2>
+    <div id="outer">
+        <div id="div1" class="my-div"></div>
+        <div id="div2" class="my-div"></div>
+        <div id="div3" class="my-div"></div>
+        <div id="div4" class="my-div"></div>
+        <div id="div5" class="my-div"></div>
+        <div id="div6" class="my-div"></div>
+        <div id="div7" class="my-div"></div>
+        <div id="div8" class="my-div"></div>
+        <div id="div9" class="my-div"></div>
+        <div id="div10" class="my-div"></div>
+    </div>
+    <p id="p"></p>
+    
+    <script>
+        /*const div1 = document.getElementById("div1")
+        const div2 = document.getElementById("div2")
+        div1.onclick = c => console.log("Hi from " + div1.id)
+        div2.addEventListener("click", c => console.log("Hi from " + div2.id))*/
+
+        const para = document.getElementById("p")
+        const outerDiv = document.getElementById("outer")
+        outerDiv.onclick = c => para.innerText = "Hi from " + c.target.id  //console.log("Hi from " + c.target.id)
+    </script>
+</body>
+</html>

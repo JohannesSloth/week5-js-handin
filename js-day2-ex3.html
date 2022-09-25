@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Excercise 3</h2>
+    <ul id="ul"></ul>
+    <form action="">
+        <input id="name-input" placeholder="Enter new name here">
+        <button id="btn1">Add Name</button>
+        <button id="btn2">Remove First</button>
+        <button id="btn3">Remove Last</button>
+    </form>
+
+    <script>
+        const names = ["Niklas","Søren","Lars","Johannes"]
+        makeList()
+        function makeList() {
+            const list = names.map(n => `<li>${encode(n)}</ls>`).join("")
+            document.getElementById("ul").innerHTML = list
+        }
+
+        document.getElementById("btn1").onclick = (evt) => {
+        evt.preventDefault()
+        const name = document.getElementById("name-input").value
+        const listViewElement = document.createElement("li");
+        listViewElement.appendChild(document.createTextNode(name))
+        const ul = document.getElementById("ul").appendChild(listViewElement)
+        names.push(name)
+        console.log(names)
+        }
+
+        document.getElementById("btn2").onclick = (evt) => {
+            evt.preventDefault()
+            document.getElementById("ul").firstChild.remove()
+            names.shift()
+            console.log(names)
+        }
+
+        document.getElementById("btn3").onclick = (evt) => {
+        evt.preventDefault()
+        document.getElementById("ul").lastChild.remove();
+        names.pop()
+        console.log(names)
+        }
+
+        function encode(str) {
+        str = str.replace(/&/g, "&amp;");
+        str = str.replace(/>/g, "&gt;");
+        str = str.replace(/</g, "&lt;");
+        str = str.replace(/"/g, "&quot;");
+        str = str.replace(/'/g, "&#039;");
+        return str;
+    }
+    </script>
+</body>
+</html>

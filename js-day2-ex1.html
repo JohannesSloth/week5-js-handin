@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Excercise 1</h2>
+    <div id="div1"  style="width: 100px;margin: 1px;">&nbsp;</div>
+    <div id="div2"  style="width: 100px;margin: 1px;">&nbsp;</div>
+    <div id="div3"  style="width: 100px;margin: 1px;">&nbsp;</div>
+    <button id="btn">Skift farver</button>
+
+    <script>
+        const divs = document.querySelectorAll("div")
+        for (var i = 0; i < divs.length; i++) {
+            divs[i].style.backgroundColor = "yellow"
+        }
+
+        const btn = document.getElementById("btn")
+        btn.onclick = colorChange
+        //btn.addEventListener("click", colorChange)
+        function colorChange() {
+            /*const div1 = document.getElementById("div1")
+            const div2 = document.getElementById("div2")
+            const div3 = document.getElementById("div3")*/
+            divs[0].style.backgroundColor = "pink"
+            divs[1].style.backgroundColor = "black"
+            divs[2].style.backgroundColor = "blue"
+        }
+
+
+
+    </script>
+</body>
+</html>
